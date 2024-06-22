@@ -3,7 +3,7 @@ from Crypto.Util.Padding import pad, unpad
 from hashlib import md5
 import os
 
-def encrypt_image(image_path, key):
+def encrypt_image(/home/kali/desktop/sample.jpeg, key):
     # Read the image file
     with open(image_path, 'rb') as file:
         image_data = file.read()
@@ -16,13 +16,13 @@ def encrypt_image(image_path, key):
     cipher = DES3.new(tdes_key, DES3.MODE_ECB)
 
     # Pad the image data to a multiple of the block size
-    padded_data = pad(image_data, DES3.block_size)
+    padded_data = pad(/home/kali/desktop/sample.jpeg, DES3.block_size)
 
     # Encrypt the padded data
     encrypted_data = cipher.encrypt(padded_data)
 
     # Save the encrypted data to a new file
-    encrypted_image_path = image_path + '.encrypted'
+    /home/kali/desktop/sample.jpeg = /home/kali/desktop/sample.jpeg + '.encrypted'
     with open(encrypted_image_path, 'wb') as file:
         file.write(encrypted_data)
 
@@ -30,7 +30,7 @@ def encrypt_image(image_path, key):
 
 def decrypt_image(encrypted_image_path, key):
     # Read the encrypted image file
-    with open(encrypted_image_path, 'rb') as file:
+    with open(/home/kali/desktop/sample.jpeg, 'rb') as file:
         encrypted_data = file.read()
 
     # Create a Triple DES key from the provided key
@@ -57,5 +57,5 @@ def decrypt_image(encrypted_image_path, key):
 image_path = '/home/kali/desktop/sample.jpeg'
 key = 'y_secret_key'
 
-encrypt_image(image_path, key)
-decrypt_image(image_path + '.encrypted', key)
+encrypt_image(/home/kali/desktop/sample.jpeg, key)
+decrypt_image(/home/kali/desktop/sample.jpeg + '.encrypted', key)
