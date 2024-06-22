@@ -1,46 +1,61 @@
-# Install pycryptodome from terminal 
-# pip install pycryptodome
-
-# Then import DES3 for Encryption and md5 for key
 from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad, unpad
 from hashlib import md5
+import os
 
-# For selecting operation from given choice
-while True:
-    print('Choose operation to be done:\n\t1- Encryption\n\t2- Decryption')
-    operation = input('Your Choice: ')
-    if operation not in ['1', '2']:
-        break
-        
-    # Image / File Path for operation
-    file_path = input('File path: ')
-    
-    # Key for performing Triple DES algorithm
-    key = input('TDES key: ')
+def encrypt_image(image_path, key):
+    # Read the image file
+    with open(image_path, 'rb') as file:
+        image_data = file.read()
 
-    # Encode given key to 16 byte ascii key with md5 operation
+    # Create a Triple DES key from the provided key
     key_hash = md5(key.encode('ascii')).digest()
-
-    # Adjust key parity of generated Hash Key for Final Triple DES Key
     tdes_key = DES3.adjust_key_parity(key_hash)
-    
-    #  Cipher with integration of Triple DES key, MODE_EAX for Confidentiality & Authentication
-    #  and nonce for generating random / pseudo random number which is used for authentication protocol
-    cipher = DES3.new(tdes_key, DES3.MODE_EAX, nonce=b'0')
 
-    # Open & read file from given path
-    with open(file_path, 'rb') as input_file:
-        file_bytes = input_file.read()
-        
-        if operation == '1':
-            # Perform Encryption operation
-            new_file_bytes = cipher.encrypt(file_bytes)
-        else:
-            # Perform Decryption operation
-            new_file_bytes = cipher.decrypt(file_bytes)
-    
-    # Write updated values in file from given path
-    with open(file_path, 'wb') as output_file:
-        output_file.write(new_file_bytes)
-        print('Operation Done!')
-        break
+    # Create a Triple DES cipher object
+    cipher = DES3.new(tdes_key, DES3.MODE_ECB)
+
+    # Pad the image data to a multiple of the block size
+    padded_data = pad(image_data, DES3.block_size)
+
+    # Encrypt the padded data
+    encrypted_data = cipher.encrypt(padded_data)
+
+    # Save the encrypted data to a new file
+    encrypted_image_path = image_path + '.encrypted'
+    with open(encrypted_image_path, 'wb') as file:
+        file.write(encrypted_data)
+
+    print(f"Encrypted image saved to {encrypted_image_path}")
+
+def decrypt_image(encrypted_image_path, key):
+    # Read the encrypted image file
+    with open(encrypted_image_path, 'rb') as file:
+        encrypted_data = file.read()
+
+    # Create a Triple DES key from the provided key
+    key_hash = md5(key.encode('ascii')).digest()
+    tdes_key = DES3.adjust_key_parity(key_hash)
+
+    # Create a Triple DES cipher object
+    cipher = DES3.new(tdes_key, DES3.MODE_ECB)
+
+    # Decrypt the encrypted data
+    decrypted_padded_data = cipher.decrypt(encrypted_data)
+
+    # Unpad the decrypted data
+    decrypted_data = unpad(decrypted_padded_data, DES3.block_size)
+
+    # Save the decrypted data to a new file
+    decrypted_image_path = encrypted_image_path[:-10]  # Remove the '.encrypted' extension
+    with open(decrypted_image_path, 'wb') as file:
+        file.write(decrypted_data)
+
+    print(f"Decrypted image saved to {decrypted_image_path}")
+
+# Example usage
+image_path = 'path/to/image.jpg'
+key = 'y_secret_key'
+
+encrypt_image(image_path, key)
+decrypt_image(image_path + '.encrypted', key)
