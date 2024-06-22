@@ -54,7 +54,7 @@ def decrypt_image(encrypted_image_path, key):
     print(f"Decrypted image saved to {decrypted_image_path}")
 
 # Example usage
-image_path = 'path/to/image.jpg'
+image_path = '/home/kali/desktop/sample.jpeg'
 key = 'y_secret_key'
 
 encrypt_image(image_path, key)
