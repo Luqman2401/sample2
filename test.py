@@ -5,7 +5,7 @@ import os
 
 def encrypt_image(/home/kali/desktop/sample.jpeg, key):
     # Read the image file
-    with open(image_path, 'rb') as file:
+    with open(/home/kali/desktop/sample.jpeg, 'rb') as file:
         image_data = file.read()
 
     # Create a Triple DES key from the provided key
@@ -23,7 +23,7 @@ def encrypt_image(/home/kali/desktop/sample.jpeg, key):
 
     # Save the encrypted data to a new file
     /home/kali/desktop/sample.jpeg = /home/kali/desktop/sample.jpeg + '.encrypted'
-    with open(encrypted_image_path, 'wb') as file:
+    with open(/home/kali/desktop/sample.jpeg, 'wb') as file:
         file.write(encrypted_data)
 
     print(f"Encrypted image saved to {encrypted_image_path}")
@@ -48,7 +48,7 @@ def decrypt_image(encrypted_image_path, key):
 
     # Save the decrypted data to a new file
     decrypted_image_path = encrypted_image_path[:-10]  # Remove the '.encrypted' extension
-    with open(decrypted_image_path, 'wb') as file:
+    with open(/home/kali/desktop/sample.jpeg, 'wb') as file:
         file.write(decrypted_data)
 
     print(f"Decrypted image saved to {decrypted_image_path}")
